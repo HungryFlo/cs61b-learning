@@ -81,8 +81,11 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if (A == null) A = B;
+        IntList tmp;
+        for (tmp = A; tmp.rest != null; tmp = tmp.rest);
+        tmp.rest = B;
+        return A;
     }
 
     /**
@@ -90,8 +93,60 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        // 这是一种比较麻烦的方法
+        IntList res = null;
+        IntList resPtr = null;
+        IntList curr = A;
+        if (curr != null) {
+            res = new IntList(curr.first,null);
+            resPtr = res;
+            if (curr.rest != null) {
+                res.rest = new IntList();
+                res = res.rest;
+            }
+            curr = curr.rest;
+        }
+        while (curr != null) {
+            res.first = curr.first;
+            if (curr.rest != null) {
+                res.rest = new IntList();
+                res = res.rest;
+            }
+            curr = curr.rest;
+        }
+
+        curr = B;
+        if (curr != null) {
+            res.rest = new IntList(curr.first, null);
+            res = res.rest;
+        }
+        while (curr != null) {
+            res.first = curr.first;
+            if (curr.rest != null) {
+                res.rest = new IntList();
+                res = res.rest;
+            }
+            curr = curr.rest;
+        }
+//        return resPtr;
+
+        // 还有一种方法，用哑结点，然后输出的时候把指针后移一位
+        // 这样可以少很多对特殊情况的单独操作，简单多了！
+        IntList head = new IntList();
+        IntList cur = head;
+        IntList ptr = A;
+        while (ptr != null) {
+            head.rest = new IntList(ptr.first, null);
+            head = head.rest;
+            ptr = ptr.rest;
+        }
+        ptr = B;
+        while (ptr != null) {
+            head.rest = new IntList(ptr.first, null);
+            head = head.rest;
+            ptr = ptr.rest;
+        }
+        return cur.rest;
     }
 
 
